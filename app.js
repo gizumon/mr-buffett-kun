@@ -2,17 +2,17 @@ const express = require('express');
 const path = require('path');
 const port = process.env.PORT || 3000;
 
-var indexRouter = require('./routes/index');
-var hooksRouter = require('./routes/hooks');
+const indexRouter = require('./routes/index');
+const webhooksRouter = require('./routes/webhook');
 
-var app = express();
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/hook', hooksRouter);
+app.use('/v1/webhook', webhooksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
