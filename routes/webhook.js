@@ -26,14 +26,14 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  let message = ''
+  let message = '';
   if(Bot.has(event.message.text)){
     message = Bot.get(event.message.text); //待ってねってメッセージだけ先に処理
     getNodeVer(event.source.userId); //スクレイピング処理が終わったらプッシュメッセージ
   }else{
     message = 'はて？？';
   }
-
+  console.log('send message', message);
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: message
