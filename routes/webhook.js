@@ -14,7 +14,7 @@ const line = require('@line/bot-sdk');
 const client = new line.Client(config);
 
 /* GET home page. */
-router.get('/', line.middleware(config), (req, res) => {
+router.post('/', line.middleware(config), (req, res) => {
   // res.render('index', { title: 'Express' });
   console.log(req.body.events);
   Promise
