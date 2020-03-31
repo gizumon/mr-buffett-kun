@@ -1,4 +1,4 @@
-import Bot from '../chatbot/reply';
+import bot from '../chatbot/reply';
 const conf = require('config');
 
 const express = require('express');
@@ -27,8 +27,8 @@ function handleEvent(event) {
   }
 
   let message = '';
-  if(Bot.has(event.message.text)){
-    message = Bot.get(event.message.text); //待ってねってメッセージだけ先に処理
+  if(bot.has(event.message.text)){
+    message = bot.get(event.message.text); //待ってねってメッセージだけ先に処理
     getNodeVer(event.source.userId); //スクレイピング処理が終わったらプッシュメッセージ
   }else{
     message = 'はて？？';
