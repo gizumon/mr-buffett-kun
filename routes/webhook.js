@@ -1,4 +1,5 @@
-import bot from '../chatbot/reply';
+const Chatbot = require('../chatbot/chatbot');
+const chatbot = new Chatbot();
 const conf = require('config');
 
 const express = require('express');
@@ -27,10 +28,10 @@ function handleEvent(event) {
   }
 
   let message = '';
-  if(bot.has(event.message.text)){
-    message = bot.get(event.message.text); //待ってねってメッセージだけ先に処理
-    getNodeVer(event.source.userId); //スクレイピング処理が終わったらプッシュメッセージ
-  }else{
+  if(chatbot.has(event.message.text)){
+    message = chatbot.getReply(event.message.text); //待ってねってメッセージだけ先に処理
+    // getNodeVer(event.source.userId); //スクレイピング処理が終わったらプッシュメッセージ
+  } else {
     message = 'はて？？';
   }
   console.log('send message', message);
