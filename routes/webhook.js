@@ -1,6 +1,6 @@
 const Chatbot = require('../chatbot/chatbot');
 const chatbot = new Chatbot();
-const conf = require('config');
+// const conf = require('config');
 
 const express = require('express');
 const router = express.Router();
@@ -15,7 +15,8 @@ const client = new line.Client(config);
 
 /* GET home page. */
 console.log(config);
-router.post('/', line.middleware(config), (req, res) => {
+// router.post('/', line.middleware(config), (req, res) => {
+router.post('/', (req, res) => {
   // res.render('index', { title: 'Express' });
   console.log(req.body.events);
   Promise
