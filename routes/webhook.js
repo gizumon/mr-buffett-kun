@@ -6,14 +6,15 @@ const express = require('express');
 const router = express.Router();
 
 const config = {
-  channelAccessToken: conf.line.ACCESS_TOKEN,
-  channelSecret: conf.line.SECRET_KEY
+  channelAccessToken: process.env.ACCESS_TOKEN,
+  channelSecret: process.env.SECRET_KEY
 };
 
 const line = require('@line/bot-sdk');
 const client = new line.Client(config);
 
 /* GET home page. */
+console.log(config);
 router.post('/', line.middleware(config), (req, res) => {
   // res.render('index', { title: 'Express' });
   console.log(req.body.events);
