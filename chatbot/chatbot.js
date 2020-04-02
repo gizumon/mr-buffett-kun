@@ -4,7 +4,7 @@ let Chatbot = function() {
     // let variables = new Map();  
 
     this.today = new Date();
-    this.todayStr = this.today.toLocaleDateString();
+    this.todayStr = this.today.getMonth() + '月' + this.today.getDate() + '日';
     /**
      * variables {key: [value]}
      */
@@ -14,9 +14,14 @@ let Chatbot = function() {
      * Chatbot {key: [value]}
      */
     this.chatbots.set("こんにちわ", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
+    this.chatbots.set("こんにちは", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
+    this.chatbots.set("はろー", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"]);
     this.chatbots.set("こんばんわ", ["ふぉっふぉっふぉ。こんばんわ👴"]);
+    this.chatbots.set("こんばんは", ["ふぉっふぉっふぉ。こんばんわ👴"]);
     this.chatbots.set("やあ", ["ふぉっふぉっふぉ。やあやあ👴"]);
-    this.chatbots.set("今日はなんにち", [`${this.todayStr}日じゃろ?`]);
+    this.chatbots.set("元気", ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"]);
+    this.chatbots.set("疲れた", ["お疲れお疲れ👴", "わしもじゃ"]);
+    this.chatbots.set("何日", [`${this.todayStr}じゃろ?`]);
 }
 
 /**
@@ -48,7 +53,7 @@ Chatbot.prototype.has = function(str) {
 }
 
 /**
- * 
+ * Get random index value from 0 to max - 1
  * @param {*} max 
  */
 getRandomInt = function(max) {
