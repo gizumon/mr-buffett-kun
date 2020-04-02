@@ -3,10 +3,6 @@
     "api": {
         "uri": "https://mr-buffett-kun.herokuapp.com/",
         "port": "3000"
-    },
-    "line": {
-        "SECRET_KEY": "a75c687df62a45f0073eb63719cc9575",
-        "ACCESS_TOKEN": "rF3gI1WCkX+3C83yxhqt8bwDLLBTR2CW3xEsNjXmQAvsmRqpW4vs/ay4Xa80bjr4TG3SHXgZbton4XV5ZEZhDRKOPg/iS7ZTbNW9iVQFlA2at4nFSua3hDGorO9xKDcSlcvksRGMYxe0MrJt8ToiSAdB04t89/1O/w1cDnyilFU="
     }
 }
 

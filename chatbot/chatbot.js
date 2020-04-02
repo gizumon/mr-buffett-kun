@@ -26,7 +26,7 @@ let Chatbot = function() {
  */
 Chatbot.prototype.getReply = function(str) {
     let array = [];
-    this.chatbotschatbots.forEach((vals, key) => {
+    this.chatbots.forEach((vals, key) => {
         if (str.includes(key)){ array = vals;};
     });
     if (Array.isArray(array)) {
