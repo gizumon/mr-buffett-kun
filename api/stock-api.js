@@ -11,8 +11,22 @@ let StockApi = function() {
  * @param {*} key
  * @return {string} 
  */
+StockApi.prototype.getDayliy = function(code) {
+  return axios.get(this.uri, {
+    params: {
+      action: 'detail',
+      param: code
+    }
+  });
+}
+
+/**
+ * Get reply from chatbot (random)
+ * @param {*} key
+ * @return {string} 
+ */
 StockApi.prototype.getDetail = function(code) {
-    axios.get(this.uri, {
+    return axios.get(this.uri, {
       params: {
         action: 'detail',
         param: code
@@ -21,7 +35,7 @@ StockApi.prototype.getDetail = function(code) {
 }
 
 StockApi.prototype.getAll = function() {
-    axios.get(this.uri, {
+    return axios.get(this.uri, {
       params: {
         action: 'all'
       }
@@ -29,7 +43,7 @@ StockApi.prototype.getAll = function() {
 }
 
 StockApi.prototype.getSummary = function(code = 'all') {
-    axios.get(this.uri, {
+    return axios.get(this.uri, {
       params: {
         action: 'summary',
         param: code
