@@ -5,7 +5,6 @@ const stockApi = new StockApi();
 let Chatbot = function() {
     // this.chatbots = new Map();
     this.chatbots = {};
-    this.functions = {};
     // let variables = new Map();  
 
     this.today = new Date();
