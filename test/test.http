@@ -1,5 +1,9 @@
 ###
 POST https://mr-buffett-kun.herokuapp.com/v1/webhook
+x-line-signature: 
 
 ###
 POST http://localhost:3000/v1/webhook
+
+###
+GET https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec?action=summary&param=all

@@ -29,17 +29,21 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  let message = '';
-  if(chatbot.has(event.message.text)){
-    message = chatbot.getReply(event.message.text); //待ってねってメッセージだけ先に処理
-    // getNodeVer(event.source.userId); //スクレイピング処理が終わったらプッシュメッセージ
+  let message = event.message.text;
+  let reply = chatbot.functions(message);
+
+  if (reply) {
+    // nothing to do
+  } else if(chatbot.has(message)) {
+    reply = chatbot.getReply(message); //待ってねってメッセージだけ先に処理
   } else {
-    message = 'はて？？';
+    reply = 'はて？？';
   }
-  console.log('send message', message);
+
+  console.log('send message', reply);
   return client.replyMessage(event.replyToken, {
     type: 'text',
-    text: message
+    text: reply
   });
 }
 

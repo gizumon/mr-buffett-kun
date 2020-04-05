@@ -1,27 +1,48 @@
+const _ = require('underscore');
+const StockApi = require('../api/stock-api');
+const stockApi = new StockApi();
 
 let Chatbot = function() {
-    this.chatbots = new Map();
+    // this.chatbots = new Map();
+    this.chatbots = {};
+    this.functions = {};
     // let variables = new Map();  
 
     this.today = new Date();
     this.todayStr = this.today.getMonth() + '月' + this.today.getDate() + '日';
+
+    this.triggers = {
+        dayliy: ['dayliy', '今日の株'],
+        all: ['all', '全部'],
+        summary: ['summary', 'まとめ']
+    }
     /**
-     * variables {key: [value]}
+     * chatbots {key: [value]}
      */
-    // variables.set("hi", ["こんにちわ"])
+    this.chatbots = {
+        "こんにちわ": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"],
+        "こんにちは": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"],
+        "はろー": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"],
+        "こんばんわ": ["ふぉっふぉっふぉ。こんばんわ👴"],
+        "こんばんは": ["ふぉっふぉっふぉ。こんばんわ👴"],
+        "やあ": ["ふぉっふぉっふぉ。やあやあ👴"],
+        "元気": ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"],
+        "疲れた": ["お疲れお疲れ👴", "わしもじゃ"],
+        "何日": [`${this.todayStr}じゃろ?`]
+    };
 
     /**
      * Chatbot {key: [value]}
      */
-    this.chatbots.set("こんにちわ", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
-    this.chatbots.set("こんにちは", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
-    this.chatbots.set("はろー", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"]);
-    this.chatbots.set("こんばんわ", ["ふぉっふぉっふぉ。こんばんわ👴"]);
-    this.chatbots.set("こんばんは", ["ふぉっふぉっふぉ。こんばんわ👴"]);
-    this.chatbots.set("やあ", ["ふぉっふぉっふぉ。やあやあ👴"]);
-    this.chatbots.set("元気", ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"]);
-    this.chatbots.set("疲れた", ["お疲れお疲れ👴", "わしもじゃ"]);
-    this.chatbots.set("何日", [`${this.todayStr}じゃろ?`]);
+    // this.chatbots.set("こんにちわ", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
+    // this.chatbots.set("こんにちは", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
+    // this.chatbots.set("はろー", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"]);
+    // this.chatbots.set("こんばんわ", ["ふぉっふぉっふぉ。こんばんわ👴"]);
+    // this.chatbots.set("こんばんは", ["ふぉっふぉっふぉ。こんばんわ👴"]);
+    // this.chatbots.set("やあ", ["ふぉっふぉっふぉ。やあやあ👴"]);
+    // this.chatbots.set("元気", ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"]);
+    // this.chatbots.set("疲れた", ["お疲れお疲れ👴", "わしもじゃ"]);
+    // this.chatbots.set("何日", [`${this.todayStr}じゃろ?`]);
 }
 
 /**
@@ -31,10 +52,10 @@ let Chatbot = function() {
  */
 Chatbot.prototype.getReply = function(str) {
     let array = [];
-    this.chatbots.forEach((vals, key) => {
-        if (str.includes(key)){ array = vals;};
+    this.chatbots.keys((key) => {
+        if (str.includes(key)){ array = this.chatbots[key];};
     });
-    if (Array.isArray(array)) {
+    if (_.isArray(array)) {
         return array[getRandomInt(array.length)];       
     }
 }
@@ -46,18 +67,71 @@ Chatbot.prototype.getReply = function(str) {
  */
 Chatbot.prototype.has = function(str) {
     let hasKey = false;
-    this.chatbots.forEach((val, key) => {
+    this.chatbots.keys().forEach((key) => {
         if (str.includes(key)){ hasKey = true;};
     });
     return hasKey;
 }
 
 /**
+ * 
+ */
+Chatbot.prototype.functions = async function(str) {
+    let hasDetail = (str.search(/\d{4}/) > 0);
+    let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
+    let hasAll = this.triggers.all.some((key) => str.includes(key));
+    let hasSummary = this.triggers.summary.some((key) => str.includes(key));
+
+    if (hasDetail) {
+        const codes = str.match(/\d{4}/);
+        const message = await getDetail(codes[0]);
+        return message;
+    } else if (hasDayliy) {
+        const message = await getDayliy();
+        return message;
+    } else if (hasAll) {
+        const message = await getAll();
+        return message;
+    } else if (hasSummary) {
+        const message = await getSummary();
+        return message;
+    }
+}
+
+/**
  * Get random index value from 0 to max - 1
  * @param {*} max 
  */
-getRandomInt = function(max) {
+let getRandomInt = function(max) {
     return Math.floor(Math.random() * Math.floor(max));
+}
+
+let getDetail = function(code) {
+    const message = stockApi.getDetail(code).then(res => {
+        return res.data;
+    });
+    return message;
+}
+
+let getDayliy = function() {
+    const message = stockApi.getDayliy().then(res => {
+        return res.data;
+    });
+    return message;
+}
+
+let getAll = function() {
+    const message = stockApi.getAll().then(res => {
+        return res.data;
+    });
+    return message;
+}
+
+let getSummary = function() {
+    const message = stockApi.getAll().then(res => {
+        return res.data;
+    });
+    return message;
 }
 
 module.exports = Chatbot;

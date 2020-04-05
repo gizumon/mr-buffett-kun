@@ -1,7 +1,10 @@
 {
     "env": "default",
-    "api": {
+    "root": {
         "uri": "https://mr-buffett-kun.herokuapp.com/",
         "port": "3000"
+    },
+    "stock": {
+        "uri": "https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec"
     }
 }
