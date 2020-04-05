@@ -31,11 +31,12 @@ function handleEvent(event) {
 
   let message = event.message.text;
   let reply = chatbot.functions(message);
+  console.log(reply);
 
   if (reply) {
     // nothing to do
   } else if(chatbot.has(message)) {
-    reply = chatbot.getReply(message); //待ってねってメッセージだけ先に処理
+    reply = chatbot.getReply(message);
   } else {
     reply = 'はて？？';
   }
