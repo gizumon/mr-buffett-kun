@@ -75,12 +75,14 @@ Chatbot.prototype.has = function(str) {
 /**
  * 
  */
-Chatbot.prototype.functions = async function(str) {
+Chatbot.prototype.functions = function(str) {
+    console.log(str);
     let hasDetail = (str.search(/\d{4}/) > 0);
     let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
     let hasAll = this.triggers.all.some((key) => str.includes(key));
     let hasSummary = this.triggers.summary.some((key) => str.includes(key));
-
+    
+    console.log(hasDetail, hasDayliy, hasAll, hasSummary);
     if (hasDetail) {
         const codes = str.match(/\d{4}/);
         const message = await getDetail(codes[0]);
