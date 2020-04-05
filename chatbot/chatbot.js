@@ -51,7 +51,7 @@ let Chatbot = function() {
  */
 Chatbot.prototype.getReply = function(str) {
     let array = [];
-    this.chatbots.keys((key) => {
+    this.chatbots.keys().forEach((key) => {
         if (str.includes(key)){ array = this.chatbots[key];};
     });
     if (_.isArray(array)) {
