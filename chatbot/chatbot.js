@@ -75,7 +75,7 @@ Chatbot.prototype.has = function(str) {
 /**
  * 
  */
-Chatbot.prototype.functions = function(str) {
+Chatbot.prototype.functions = async function(str) {
     console.log(str);
     let hasDetail = (str.search(/\d{4}/) > 0);
     let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
@@ -97,6 +97,7 @@ Chatbot.prototype.functions = function(str) {
         const message = await getSummary();
         return message;
     }
+    return '';
 }
 
 /**
