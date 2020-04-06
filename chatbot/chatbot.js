@@ -77,7 +77,7 @@ Chatbot.prototype.has = function(str) {
  */
 Chatbot.prototype.functions = function(str) {
     console.log(str);
-    let hasDetail = (str.search(/\d{4}/) > 0);
+    let hasDetail = (str.search(/[0-9]{4}/) > 0);
     let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
     let hasAll = this.triggers.all.some((key) => str.includes(key));
     let hasSummary = this.triggers.summary.some((key) => str.includes(key));
@@ -112,6 +112,7 @@ let getDetail = function(code) {
     const message = stockApi.getDetail(code).then(res => {
         return res.data;
     });
+    console.log(message);
     return message;
 }
 
@@ -119,6 +120,7 @@ let getDayliy = function() {
     const message = stockApi.getDayliy().then(res => {
         return res.data;
     });
+    console.log(message);
     return message;
 }
 
@@ -126,6 +128,7 @@ let getAll = function() {
     const message = stockApi.getAll().then(res => {
         return res.data;
     });
+    console.log(message);
     return message;
 }
 
@@ -133,6 +136,7 @@ let getSummary = function() {
     const message = stockApi.getAll().then(res => {
         return res.data;
     });
+    console.log(message);
     return message;
 }
 
