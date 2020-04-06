@@ -77,14 +77,15 @@ Chatbot.prototype.has = function(str) {
  */
 Chatbot.prototype.functions = function(str) {
     console.log(str);
-    let hasDetail = (str.search(/[0-9]{4}/) > 0);
+    const codeRegexp = /\d{4}/;
+    let hasDetail = codeRegexp.test(str);
     let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
     let hasAll = this.triggers.all.some((key) => str.includes(key));
     let hasSummary = this.triggers.summary.some((key) => str.includes(key));
     
     console.log(hasDetail, hasDayliy, hasAll, hasSummary);
     if (hasDetail) {
-        const codes = str.match(/\d{4}/);
+        const codes = codeRegexp.exec(str);
         const message = getDetail(codes[0]);
         return message;
     } else if (hasDayliy) {
