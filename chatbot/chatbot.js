@@ -112,6 +112,8 @@ let getRandomInt = function(max) {
 let getDetail = function(code) {
     const message = stockApi.getDetail(code).then(res => {
         return res.data;
+    }).catch((err) => {
+        return '失敗。。。'
     });
     console.log(message);
     return message;
@@ -120,6 +122,8 @@ let getDetail = function(code) {
 let getDayliy = function() {
     const message = stockApi.getDayliy().then(res => {
         return res.data;
+    }).catch((err) => {
+        return '失敗。。。'
     });
     console.log(message);
     return message;
@@ -128,6 +132,8 @@ let getDayliy = function() {
 let getAll = function() {
     const message = stockApi.getAll().then(res => {
         return res.data;
+    }).catch((err) => {
+        return '失敗。。。'
     });
     console.log(message);
     return message;
@@ -136,6 +142,8 @@ let getAll = function() {
 let getSummary = function() {
     const message = stockApi.getAll().then(res => {
         return res.data;
+    }).catch((err) => {
+        return '失敗。。。'
     });
     console.log(message);
     return message;
