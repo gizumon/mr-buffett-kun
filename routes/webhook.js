@@ -34,18 +34,19 @@ async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
-
+  let reply;
   let message = event.message.text;
-  let reply = await chatbot.functions(message);
+  let result = await chatbot.functions(message);
   console.log('INFO: Get reply from chatbot functions', reply);
 
-  if (reply) {
-    // nothing to do
+  if (!_.isEmpty(result)) {
+    // リストの場合、最初のもののみ表示
+    reply = _.isArray(result) ? result[0] : result;
   } else if(chatbot.has(message)) {
     reply = chatbot.getReply(message);
   } else {
     reply = 'はて？？';
-  }     
+  }
 
   console.log('send message: \n', reply);
   return client.replyMessage(event.replyToken, {
