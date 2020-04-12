@@ -75,7 +75,7 @@ Chatbot.prototype.has = function(str) {
 /**
  * 
  */
-Chatbot.prototype.functions = function(str) {
+Chatbot.prototype.functions = async function(str) {
     console.log(str);
     const codeRegexp = /\d{4}/;
     let hasDetail = codeRegexp.test(str);
@@ -86,19 +86,19 @@ Chatbot.prototype.functions = function(str) {
     console.log(hasDetail, hasDayliy, hasAll, hasSummary);
     if (hasDetail) {
         const codes = codeRegexp.exec(str);
-        const message = getDetail(codes[0]);
+        const message = await getDetail(codes[0]);
         console.log(message);
         return message;
     } else if (hasDayliy) {
-        const message = getDayliy();
+        const message = await getDayliy();
         console.log(message);
         return message;
     } else if (hasAll) {
+        const message = await getAll();
         console.log(message);
-        const message = getAll();
         return message;
     } else if (hasSummary) {
-        const message = getSummary();
+        const message = await getSummary();
         console.log(message);
         return message;
     }
