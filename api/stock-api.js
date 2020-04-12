@@ -26,29 +26,29 @@ StockApi.prototype.getDayliy = function(code) {
  * @return {string} 
  */
 StockApi.prototype.getDetail = function(code) {
-    return axios.get(this.uri, {
-      params: {
-        action: 'detail',
-        param: code
-      }
-    });
+  return axios.get(this.uri, {
+    params: {
+      action: 'detail',
+      param: code
+    }
+  });
 }
 
 StockApi.prototype.getAll = function() {
-    return axios.get(this.uri, {
-      params: {
-        action: 'all'
-      }
-    });
+  return axios.get(this.uri, {
+    params: {
+      action: 'all'
+    }
+  });
 }
 
 StockApi.prototype.getSummary = function(code = 'all') {
-    return axios.get(this.uri, {
-      params: {
-        action: 'summary',
-        param: code
-      }
-    });
+  return axios.get(this.uri, {
+    params: {
+      action: 'summary',
+      param: code
+    }
+  });
 }
 
 module.exports = StockApi;

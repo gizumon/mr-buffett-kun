@@ -87,15 +87,19 @@ Chatbot.prototype.functions = function(str) {
     if (hasDetail) {
         const codes = codeRegexp.exec(str);
         const message = getDetail(codes[0]);
+        console.log(message);
         return message;
     } else if (hasDayliy) {
         const message = getDayliy();
+        console.log(message);
         return message;
     } else if (hasAll) {
+        console.log(message);
         const message = getAll();
         return message;
     } else if (hasSummary) {
         const message = getSummary();
+        console.log(message);
         return message;
     }
     return '';
@@ -110,43 +114,44 @@ let getRandomInt = function(max) {
 }
 
 let getDetail = function(code) {
-    const message = stockApi.getDetail(code).then(res => {
+    return stockApi.getDetail(code).then(res => {
         return res.data;
     }).catch((err) => {
         return '失敗。。。'
     });
-    console.log(message);
-    return message;
+    // console.log(message);
+    // return message;
 }
 
 let getDayliy = function() {
-    const message = stockApi.getDayliy().then(res => {
+    return stockApi.getDayliy().then(res => {
         return res.data;
     }).catch((err) => {
+        console.log('ERROR:', err);
         return '失敗。。。'
     });
-    console.log(message);
-    return message;
+    // console.log(message);
+    // return message;
 }
 
 let getAll = function() {
-    const message = stockApi.getAll().then(res => {
+    return stockApi.getAll().then(res => {
         return res.data;
     }).catch((err) => {
         return '失敗。。。'
     });
-    console.log(message);
-    return message;
+    // console.log(message);
+    // return message;
 }
 
 let getSummary = function() {
-    const message = stockApi.getAll().then(res => {
+    return stockApi.getAll().then(res => {
         return res.data;
     }).catch((err) => {
         return '失敗。。。'
     });
-    console.log(message);
-    return message;
+    // console.log(message);
+    // return message;
 }
 
 module.exports = Chatbot;
