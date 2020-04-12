@@ -102,7 +102,7 @@ Chatbot.prototype.functions = async function(str) {
         console.log(message);
         return message;
     }
-    return '';
+    return;
 }
 
 /**
@@ -114,13 +114,13 @@ let getRandomInt = function(max) {
 }
 
 let getDetail = function(code) {
-    return stockApi.getDetail(code).then(res => {
+    const message = stockApi.getDetail(code).then(res => {
         return res.data;
     }).catch((err) => {
         return '失敗。。。'
     });
-    // console.log(message);
-    // return message;
+    console.log(message);
+    return message;
 }
 
 let getDayliy = function() {

@@ -24,13 +24,13 @@ router.post('/', (req, res) => {
       .then((result) => res.json(result));
 });
 
-function handleEvent(event) {
+async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
 
   let message = event.message.text;
-  let reply = chatbot.functions(message);
+  let reply = await chatbot.functions(message);
   console.log(reply);
 
   if (reply) {
