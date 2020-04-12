@@ -1,13 +1,13 @@
 const Chatbot = require('../chatbot/chatbot');
 const chatbot = new Chatbot();
-// const conf = require('config');
+const conf = require('config');
 
 const express = require('express');
 const router = express.Router();
 
 const config = {
-  channelAccessToken: process.env.ACCESS_TOKEN,
-  channelSecret: process.env.SECRET_KEY
+  channelAccessToken: process.env.ACCESS_TOKEN | conf.line.channelAccessToken,
+  channelSecret: process.env.SECRET_KEY | conf.line.channelSecret
 };
 
 const line = require('@line/bot-sdk');
@@ -17,10 +17,9 @@ const client = new line.Client(config);
 console.log(config);
 // router.post('/', line.middleware(config), (req, res) => {
 router.post('/', (req, res) => {
-  // res.render('index', { title: 'Express' });
   console.log(req.body.events);
   Promise
-      .all(req.body.events.map(handleEvent))
+      .all(req.body.events.map(async function(e) { return await handleEvent(e)}))
       .then((result) => res.json(result));
 });
 
@@ -39,7 +38,7 @@ async function handleEvent(event) {
     reply = chatbot.getReply(message);
   } else {
     reply = 'はて？？';
-  }
+  }     
 
   console.log('send message', reply);
   return client.replyMessage(event.replyToken, {
