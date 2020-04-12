@@ -1,6 +1,7 @@
 const Chatbot = require('../chatbot/chatbot');
 const chatbot = new Chatbot();
 const conf = require('config');
+const _ = require('underscore');
 
 const express = require('express');
 const router = express.Router();
