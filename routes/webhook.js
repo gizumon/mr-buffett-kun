@@ -6,8 +6,8 @@ const express = require('express');
 const router = express.Router();
 
 const config = {
-  channelAccessToken: process.env.ACCESS_TOKEN | conf.line.channelAccessToken,
-  channelSecret: process.env.SECRET_KEY | conf.line.channelSecret
+  channelAccessToken: process.env.ACCESS_TOKEN || conf.line.channelAccessToken,
+  channelSecret: process.env.SECRET_KEY || conf.line.channelSecret
 };
 
 const line = require('@line/bot-sdk');
@@ -18,9 +18,16 @@ console.log(config);
 // router.post('/', line.middleware(config), (req, res) => {
 router.post('/', (req, res) => {
   console.log(req.body.events);
-  Promise
-      .all(req.body.events.map(async function(e) { return await handleEvent(e)}))
-      .then((result) => res.json(result));
+  req.body.events.forEach(event => {
+    handleEvent(event).then((result) => {
+      console.log(result);
+      res.json(result)
+    })
+    .catch((err) => {
+       console.log(`ERROR: ${err.status} ${err.message}`);
+       res.json(err);
+    });
+  });
 });
 
 async function handleEvent(event) {
@@ -30,7 +37,7 @@ async function handleEvent(event) {
 
   let message = event.message.text;
   let reply = await chatbot.functions(message);
-  console.log(reply);
+  console.log('INFO: Get reply from chatbot functions', reply);
 
   if (reply) {
     // nothing to do
@@ -40,7 +47,7 @@ async function handleEvent(event) {
     reply = 'はて？？';
   }     
 
-  console.log('send message', reply);
+  console.log('send message: \n', reply);
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: reply
