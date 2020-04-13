@@ -11,9 +11,11 @@ let Chatbot = function() {
     this.todayStr = this.today.getMonth() + '月' + this.today.getDate() + '日';
 
     this.triggers = {
-        dayliy: ['dayliy', '今日の株'],
-        all: ['all', '全部'],
-        summary: ['summary', 'まとめ']
+        dayliy: ['dayliy', '本日の株', '今日', '日報'],
+        all: ['all', '全部', '全て'],
+        summary: ['summary', 'まとめ', 'さまりー', 'サマリー'],
+        codes: ['codes', '銘柄', 'コード', '何持ってる', 'なに持ってる？', 'なにもってる？'],
+        fiscalPeriod: ['fiscalPeriod', '決算']
     }
     /**
      * chatbots {key: [value]}
@@ -29,19 +31,6 @@ let Chatbot = function() {
         "疲れた": ["お疲れお疲れ👴", "わしもじゃ"],
         "何日": [`${this.todayStr}じゃろ?`]
     };
-
-    /**
-     * Chatbot {key: [value]}
-     */
-    // this.chatbots.set("こんにちわ", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
-    // this.chatbots.set("こんにちは", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"]);
-    // this.chatbots.set("はろー", ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"]);
-    // this.chatbots.set("こんばんわ", ["ふぉっふぉっふぉ。こんばんわ👴"]);
-    // this.chatbots.set("こんばんは", ["ふぉっふぉっふぉ。こんばんわ👴"]);
-    // this.chatbots.set("やあ", ["ふぉっふぉっふぉ。やあやあ👴"]);
-    // this.chatbots.set("元気", ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"]);
-    // this.chatbots.set("疲れた", ["お疲れお疲れ👴", "わしもじゃ"]);
-    // this.chatbots.set("何日", [`${this.todayStr}じゃろ?`]);
 }
 
 /**
@@ -77,32 +66,38 @@ Chatbot.prototype.has = function(str) {
  */
 Chatbot.prototype.functions = async function(str) {
     console.log(str);
+    let results = [];
     const codeRegexp = /\d{4}/;
-    let hasDetail = codeRegexp.test(str);
-    let hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
-    let hasAll = this.triggers.all.some((key) => str.includes(key));
-    let hasSummary = this.triggers.summary.some((key) => str.includes(key));
+    const hasDetail = codeRegexp.test(str);
+    const hasDayliy = this.triggers.dayliy.some((key) => str.includes(key));
+    const hasAll = this.triggers.all.some((key) => str.includes(key));
+    const hasSummary = this.triggers.summary.some((key) => str.includes(key));
+    const hasCodes = this.triggers.codes.some((key) => str.includes(key));
+    const hasFiscalPeriod = this.triggers.fiscalPeriod.some((key) => str.includes(key));
     
-    console.log(hasDetail, hasDayliy, hasAll, hasSummary);
+    console.log(hasDetail, hasDayliy, hasAll, hasSummary, hasCodes);
     if (hasDetail) {
         const codes = codeRegexp.exec(str);
-        const message = await getDetail(codes[0]);
-        console.log(message);
-        return message;
+        results = await getDetail(codes[0]);
     } else if (hasDayliy) {
-        const message = await getDayliy();
-        console.log(message);
-        return message;
+        results = await getDayliy();
     } else if (hasAll) {
-        const message = await getAll();
-        console.log(message);
-        return message;
+        results = await getAll();
     } else if (hasSummary) {
-        const message = await getSummary();
-        console.log(message);
-        return message;
+        const codes = codeRegexp.exec(str);
+        results = await getSummary(codes ? codes[0]: null);
+    } else if (hasCodes) {
+        results = await getCodes();
+    } else if (hasFiscalPeriod) {
+        results = await getFiscalPeriod();
     }
-    return;
+    console.log(results);
+    if (_.isArray(results)) {
+        message = results.join('\n');
+    } else {
+        message = results;
+    }
+    return message;
 }
 
 /**
@@ -117,7 +112,7 @@ let getDetail = function(code) {
     const message = stockApi.getDetail(code).then(res => {
         return res.data;
     }).catch((err) => {
-        return '失敗。。。'
+        return ['失敗。。。']
     });
     console.log(message);
     return message;
@@ -128,30 +123,40 @@ let getDayliy = function() {
         return res.data;
     }).catch((err) => {
         console.log('ERROR:', err);
-        return '失敗。。。'
+        return ['失敗。。。', err.status, err.message]
     });
-    // console.log(message);
-    // return message;
 }
 
 let getAll = function() {
     return stockApi.getAll().then(res => {
         return res.data;
     }).catch((err) => {
-        return '失敗。。。'
+        return ['失敗。。。', err.status, err.message]
     });
-    // console.log(message);
-    // return message;
 }
 
 let getSummary = function() {
     return stockApi.getAll().then(res => {
         return res.data;
     }).catch((err) => {
-        return '失敗。。。'
+        return ['失敗。。。', err.status, err.message]
     });
-    // console.log(message);
-    // return message;
+}
+
+let getCodes = function() {
+    return stockApi.getCodes().then(res => {
+        return res.data;
+    }).catch((err) => {
+        return ['失敗。。。', err.status, err.message]
+    });
+}
+
+let getFiscalPeriod = function() {
+    return stockApi.getFiscalPeriod().then(res => {
+        return res.data;
+    }).catch((err) => {
+        return ['失敗。。。', err.status, err.message]
+    });
 }
 
 module.exports = Chatbot;

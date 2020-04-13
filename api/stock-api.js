@@ -51,4 +51,20 @@ StockApi.prototype.getSummary = function(code = 'all') {
   });
 }
 
+StockApi.prototype.getCodes = function() {
+  return axios.get(this.uri, {
+    params: {
+      action: 'codes'
+    }
+  });
+}
+
+StockApi.prototype.getFiscalPeriod = function() {
+  return axios.get(this.uri, {
+    params: {
+      action: 'fiscalPeriod'
+    }
+  });
+}
+
 module.exports = StockApi;
