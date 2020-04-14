@@ -56,7 +56,7 @@ async function handleEvent(event) {
   // 最大文字数以上の場合、最大文字ずつで区切ってプッシュメッセージ
   while (reply.length - maxLength > 0) {
     console.log(event.source.userId);
-    const endIndex = reply.slice(0, maxLength).lastIndex('\n') + 1;
+    const endIndex = reply.slice(0, maxLength).lastIndexOf('\n') + 1;
     await client.pushMessage(event.source.userId, {
       type: 'text',
       text: reply.slice(0, endIndex),
