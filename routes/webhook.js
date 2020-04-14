@@ -15,7 +15,6 @@ const line = require('@line/bot-sdk');
 const client = new line.Client(config);
 
 const maxLenght = 2000;
-let userId = '';
 
 /* GET home page. */
 console.log(config);
@@ -23,7 +22,6 @@ console.log(config);
 router.post('/', (req, res) => {
   console.log(req.body.events);
   req.body.events.forEach(event => {
-    userId = event.source.userId;
     handleEvent(event).then((result) => {
       console.log(result);
       res.json(result)
@@ -56,13 +54,14 @@ async function handleEvent(event) {
   console.log('send message: ', reply.length, reply);
   
   // 最大文字数以上の場合、最大文字ずつで区切ってプッシュメッセージ
-  for (let i = maxLenght; i < reply.length; i+=maxLenght) {
-    console.log(userId);
-    console.log(reply.slice(i, i+maxLenght));
-    await client.pushMessage(userId, {
+  for (let i = 0; reply.length - maxLength > 0; i+=maxLenght) {
+    console.log(event.source.userId);
+    console.log(reply.slice(i, i + maxLenght));
+    await client.pushMessage(event.source.userId, {
       type: 'text',
-      text: reply.slice(i, i+maxLenght),
+      text: reply.slice(i, i + maxLenght),
     });
+    reply = reply.slice(i + maxLenght, reply.length);
   }
 
   return client.replyMessage(event.replyToken, {
