@@ -48,7 +48,7 @@ async function handleEvent(event) {
   } else if(chatbot.has(message)) {
     reply = chatbot.getReply(message);
   } else {
-    reply = 'はて？？';
+    reply = 'はて？？👴 へるぷと言ってくれれば、わしができることを教えるんじゃ。';
   }
 
   console.log('send message: ', reply.length, reply);
