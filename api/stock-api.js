@@ -14,7 +14,7 @@ let StockApi = function() {
 StockApi.prototype.getDayliy = function(code) {
   return axios.get(this.uri, {
     params: {
-      action: 'detail',
+      action: 'dayliyReport',
       param: code
     }
   });

@@ -11,12 +11,15 @@ let Chatbot = function() {
     this.todayStr = this.today.getMonth() + '月' + this.today.getDate() + '日';
 
     this.triggers = {
-        dayliy: ['dayliy', '本日の株', '今日', '日報'],
+        dayliy: ['dayliy', 'でいりー', 'デイリー', '本日の株', '今日', '日報'],
         all: ['all', '全部', '全て'],
+        detail: [], // 数値4桁で別判定
         summary: ['summary', 'まとめ', 'さまりー', 'サマリー'],
-        codes: ['codes', '銘柄', 'コード', '何持ってる', 'なに持ってる？', 'なにもってる？'],
-        fiscalPeriod: ['fiscalPeriod', '決算']
+        codes: ['codes', '銘柄', '一覧', '一覧', 'コード', '何持ってる', 'なに持ってる？', 'なにもってる？'],
+        fiscalPeriod: ['fiscalPeriod', '決算'],
+        help: ['help', 'ヘルプ', 'へるぷ', 'どうやって', '使い方', 'つかいかた', 'How']
     }
+
     /**
      * chatbots {key: [value]}
      */
@@ -31,6 +34,16 @@ let Chatbot = function() {
         "疲れた": ["お疲れお疲れ👴", "わしもじゃ"],
         "何日": [`${this.todayStr}じゃろ?`]
     };
+
+    this.helpText = `ふぉっふぉっふぉ。こんにちわ👴\n` +
+                    `使い方を教えるんじゃ。\n` + 
+                    `わしができることは今のところこれだけじゃなあ。\n` +
+                    `①日報だせちゃう (日報)\n` + 
+                    `②買ってる全株だせちゃう (全部)\n` + 
+                    `③各株価の詳細だせちゃう([銘柄code])\n` + 
+                    `④買ってる銘柄一覧だせちゃう (銘柄)\n` + 
+                    `⑤買ってる株の決算日一覧だせちゃう (決算)\n` + 
+                    `⑥買ってる株の集計だせちゃう(サマリー)\n`;
 }
 
 /**
@@ -74,6 +87,7 @@ Chatbot.prototype.functions = async function(str) {
     const hasSummary = this.triggers.summary.some((key) => str.includes(key));
     const hasCodes = this.triggers.codes.some((key) => str.includes(key));
     const hasFiscalPeriod = this.triggers.fiscalPeriod.some((key) => str.includes(key));
+    const hasHelp = this.triggers.help.some((key) => str.includes(key));
     
     console.log(hasDetail, hasDayliy, hasAll, hasSummary, hasCodes);
     if (hasDetail) {
@@ -90,6 +104,8 @@ Chatbot.prototype.functions = async function(str) {
         results = await getCodes();
     } else if (hasFiscalPeriod) {
         results = await getFiscalPeriod();
+    } else if (hasHelp) {
+        results = [this.helpText];
     }
     console.log(results);
     if (_.isArray(results)) {
@@ -136,7 +152,7 @@ let getAll = function() {
 }
 
 let getSummary = function() {
-    return stockApi.getAll().then(res => {
+    return stockApi.getSummary().then(res => {
         return res.data;
     }).catch((err) => {
         return ['失敗。。。', err.status, err.message]
