@@ -1,9 +1,55 @@
 ###
 POST https://mr-buffett-kun.herokuapp.com/v1/webhook
-x-line-signature: 
+
+{
+  "events": [
+        {
+            "type": "message",
+            "replyToken": "1889739683cd464f9563eb3fbb7aac4e",
+            "source": {
+                "userId": "U7f542d60f1d2f646e11037df05c928d5",
+                "type": "user"
+            },
+            "timestamp": 1586680754854,
+            "mode": "active",
+            "message": {
+                "type": "text",
+                "id": "11772025544069",
+                "text": "こんにちわ"
+            }
+        }
+    ]
+}
 
 ###
 POST http://localhost:3000/v1/webhook
+Content-Type: application/json
+
+{
+  "events": [
+        {
+            "type": "message",
+            "replyToken": "1889739683cd464f9563eb3fbb7aac4e",
+            "source": {
+                "userId": "U7f542d60f1d2f646e11037df05c928d5",
+                "type": "user"
+            },
+            "timestamp": 1586680754854,
+            "mode": "active",
+            "message": {
+                "type": "text",
+                "id": "11772025544069",
+                "text": "こんにちわ"
+            }
+        }
+    ]
+}
 
 ###
-GET https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec?action=summary&param=all
+GET https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec?action=detail&param=all
+
+###
+GET https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec/exec?action=fiscalPeriod
+
+###　all
+GET https://script.google.com/macros/s/AKfycbxhEsVjgE4omtWq1PoQNw8pPeaviir0f4dH1W4JZvPGa-TuL04/exec?action=daily
