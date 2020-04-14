@@ -14,7 +14,7 @@ const config = {
 const line = require('@line/bot-sdk');
 const client = new line.Client(config);
 
-const maxLenght = 2000;
+const maxLength = 2000;
 
 /* GET home page. */
 console.log(config);
@@ -54,14 +54,14 @@ async function handleEvent(event) {
   console.log('send message: ', reply.length, reply);
   
   // 最大文字数以上の場合、最大文字ずつで区切ってプッシュメッセージ
-  for (let i = 0; reply.length - maxLength > 0; i+=maxLenght) {
+  for (let i = 0; reply.length - maxLength > 0; i+=maxLength) {
     console.log(event.source.userId);
-    console.log(reply.slice(i, i + maxLenght));
+    const endIndex = reply.slice(0, maxLength).lastIndex('\n');
     await client.pushMessage(event.source.userId, {
       type: 'text',
-      text: reply.slice(i, i + maxLenght),
+      text: reply.slice(0, endIndex),
     });
-    reply = reply.slice(i + maxLenght, reply.length);
+    reply = reply.slice(endIndex);
   }
 
   return client.replyMessage(event.replyToken, {
