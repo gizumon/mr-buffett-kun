@@ -14,12 +14,16 @@ const config = {
 const line = require('@line/bot-sdk');
 const client = new line.Client(config);
 
+const maxLenght = 2000;
+let userId = '';
+
 /* GET home page. */
 console.log(config);
 // router.post('/', line.middleware(config), (req, res) => {
 router.post('/', (req, res) => {
   console.log(req.body.events);
   req.body.events.forEach(event => {
+    userId = event.source.userId;
     handleEvent(event).then((result) => {
       console.log(result);
       res.json(result)
@@ -50,6 +54,13 @@ async function handleEvent(event) {
   }
 
   console.log('send message: \n', reply);
+  // 最大文字数以上の場合、最大文字ずつで区切ってプッシュメッセージ
+  for (let i = maxLenght; i < reply.length; i+=maxLenght) {
+    await client.pushMessage(userId, {
+      type: 'text',
+      text: reply.slice(i, i+maxLenght),
+    });
+  }
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: reply
