@@ -11,39 +11,44 @@ let Chatbot = function() {
     this.todayStr = this.today.getMonth() + '月' + this.today.getDate() + '日';
 
     this.triggers = {
-        dayliy: ['dayliy', 'でいりー', 'デイリー', '本日の株', '今日', '日報'],
-        all: ['all', '全部', '全て'],
-        detail: [], // 数値4桁で別判定
-        summary: ['summary', 'まとめ', 'さまりー', 'サマリー'],
-        codes: ['codes', '銘柄', '一覧', '一覧', 'コード', '何持ってる', 'なに持ってる？', 'なにもってる？'],
-        fiscalPeriod: ['fiscalPeriod', '決算'],
-        help: ['help', 'ヘルプ', 'へるぷ', 'どうやって', '使い方', 'つかいかた', 'How']
+        dayliy: ['①', 'dayliy', 'でいりー', 'デイリー', '本日の株', '今日', '日報', 'いつもの'],
+        all: ['②', 'all', '全部', '全て'],
+        detail: ['③'], // 数値4桁で別判定
+        codes: ['④', 'codes', '銘柄', '一覧', '一覧', 'コード', '何持ってる', 'なに持ってる', 'なにもってる'],
+        fiscalPeriod: ['⑤', 'fiscalPeriod', '決算'],
+        summary: ['⑥', 'summary', 'まとめ', 'さまり', 'サマリ'],
+        help: ['⑦', 'help', 'ヘルプ', 'へるぷ', 'どうやって', '使い方', 'つかいかた', 'How', 'how']
     }
 
     /**
      * chatbots {key: [value]}
      */
     this.chatbots = {
-        "こんにちわ": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"],
-        "こんにちは": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ"],
+        "こんにちわ": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"],
+        "こんにちは": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"],
         "はろー": ["ふぉっふぉっふぉ。こんにちわ👴", "やあやあ👴"],
         "こんばんわ": ["ふぉっふぉっふぉ。こんばんわ👴"],
         "こんばんは": ["ふぉっふぉっふぉ。こんばんわ👴"],
         "やあ": ["ふぉっふぉっふぉ。やあやあ👴"],
-        "元気": ["腰が痛いぞ。。", "そこそこかのう。", "すこぶる元気じゃぞい"],
-        "疲れた": ["お疲れお疲れ👴", "わしもじゃ"],
-        "何日": [`${this.todayStr}じゃろ?`]
+        "元気": ["腰が痛いぞ。。", "元気じゃよ。", "すこぶる元気じゃぞい"],
+        "疲": ["お疲れお疲れ👴", "わしも疲れたんじゃ"],
+        "何日": [`${this.todayStr}じゃろ?`],
+        "サイト": ["https://www.buffett-code.com/\nhttps://kabuyoho.ifis.co.jp/index.php\nhttps://minkabu.jp/\nhttps://kabutan.jp/"],
+        "さいと": ["https://www.buffett-code.com/\nhttps://kabuyoho.ifis.co.jp/index.php\nhttps://minkabu.jp/\nhttps://kabutan.jp/"],
+        "スプレッド": ["https://docs.google.com/spreadsheets/d/112hbvHpRtZL9TkbaaprEnLlsfr2z6d8CUIkBpK-x4G0/edit#gid=0"],
+        "すぷれっど": ["https://docs.google.com/spreadsheets/d/112hbvHpRtZL9TkbaaprEnLlsfr2z6d8CUIkBpK-x4G0/edit#gid=0"],
+        "シート": ["https://docs.google.com/spreadsheets/d/112hbvHpRtZL9TkbaaprEnLlsfr2z6d8CUIkBpK-x4G0/edit#gid=0"],
+        "しーと": ["https://docs.google.com/spreadsheets/d/112hbvHpRtZL9TkbaaprEnLlsfr2z6d8CUIkBpK-x4G0/edit#gid=0"],
     };
 
     this.helpText = `ふぉっふぉっふぉ。こんにちわ👴\n` +
-                    `使い方を教えるんじゃ。\n` + 
                     `わしができることは今のところこれだけじゃなあ。\n` +
-                    `①日報だせちゃう (日報)\n` + 
-                    `②買ってる全株だせちゃう (全部)\n` + 
-                    `③各株価の詳細だせちゃう([銘柄code])\n` + 
-                    `④買ってる銘柄一覧だせちゃう (銘柄)\n` + 
-                    `⑤買ってる株の決算日一覧だせちゃう (決算)\n` + 
-                    `⑥買ってる株の集計だせちゃう(サマリー)\n`;
+                    `①日報だしちゃう (日報)\n` + 
+                    `②マイ株全部だしちゃう (全部)\n` + 
+                    `③各株価の詳細だしちゃう (9999)\n` + 
+                    `④マイ株の一覧だしちゃう (銘柄)\n` + 
+                    `⑤マイ株の決算日だしちゃう (決算)\n` + 
+                    `⑥マイ株の集計だしちゃう(サマリ)\n`;
 }
 
 /**
