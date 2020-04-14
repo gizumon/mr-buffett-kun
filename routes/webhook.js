@@ -57,12 +57,14 @@ async function handleEvent(event) {
   
   // 最大文字数以上の場合、最大文字ずつで区切ってプッシュメッセージ
   for (let i = maxLenght; i < reply.length; i+=maxLenght) {
+    console.log(userId);
     console.log(reply.slice(i, i+maxLenght));
     await client.pushMessage(userId, {
       type: 'text',
       text: reply.slice(i, i+maxLenght),
     });
   }
+
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: reply
