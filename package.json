@@ -16,6 +16,6 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.2",
-    "underscore": "^1.10.2"
+    "underscore": "^1.12.1"
   }
 }
